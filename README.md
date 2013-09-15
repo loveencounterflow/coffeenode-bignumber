@@ -4,18 +4,18 @@
 
 ## Rationale
 
-As is well known, JavaScript has only a single numerical datatype, an [implementation of the IEEE 754
+As is well known, **JavaScript has only a single numerical datatype**, an [implementation of the IEEE 754
 standard](https://en.wikipedia.org/wiki/IEEE_754#Basic_formats). This means that JavaScript represents all
 numerical values as 64-bit floating point values, with the consequence that the largest exact integral
-value is 2<sup>53</sup>sup> (ie, 9007199254740992). Also, since all values are stored in base 2, even
+value is 2<sup>53</sup> (ie, 9'007'199'254'740'992). Also, since all values are stored in base 2, even
 many of those rational numbers `p/q` that do take on a finite form in a decimal representation are only
-approximately expressible in base 2—which leads to the now-famous violation of the assumption that `0.1 + 0.1
-+ 0.1` should equal `0.3`. Note that practically all modern languages running on contemporary hardware
+approximately expressible in base 2—which leads to the now-famous violation of the assumption that
+`0.1 + 0.1 + 0.1` should equal `0.3`. Note that practically all modern languages running on contemporary hardware
 suffer from these and similar defects; basically, it is a trade-off where efficiency in storage and performance
 have to be balanced with numerical correctness.
 
-There are several possible solutions to the problem of how to do calculations with very big integers and
-very log decimal fractions: for example, NodeJS's `process.hrtime` returns a tuple `[ s, ns, ]` where `s`
+**There are several possible solutions** to the problem of how to do calculations with very big integers and
+precise decimal fractions: for example, NodeJS's `process.hrtime` returns a tuple `[ s, ns, ]` where `s`
 represents the full seconds and `ns` the nanoseconds that have elapsed since some epoch in the past.
 Separating the two parts means each part can be represented as a JavaScript integer without becoming too
 big, but  it also means that adding and subtracting such time values becomes a chore as you have to take
@@ -26,7 +26,7 @@ then be exact, but the difficulties start when you want to do things like adding
 33% percent rebate: all of a sudden, your implementation has not only to be reasonable, but also to comply
 with relevant laws.
 
-Within current (2013) JavaScript VMs, there is little doubt that nothing but a dedicated library for
+Within current (2013) JavaScript VMs, there is little doubt that **nothing but a dedicated library** for
 numerically correct big integers and long decimal fractions can be called a scalable, reliable, and
 manageable solution for the outlined applications. In order to be scalable, such a library should be
 reasonably fast; in order to be reliable, it should have been in widespread use for a number of years, and
