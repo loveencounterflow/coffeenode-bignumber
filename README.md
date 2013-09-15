@@ -31,13 +31,14 @@ numerically correct big integers and long decimal fractions can be called a scal
 manageable solution for the outlined applications. In order to be scalable, such a library should be
 reasonably fast; in order to be reliable, it should have been in widespread use for a number of years, and
 in order to be manageable, it should have a 'nice' API. Also, it would be good if the library didn't rely
-on some C code to get compiled, for that excludes usage within the browser (an *optional* compilation step
+on some C code to get compiled, for that excludes usage within the browser and provides for an additional
+point of failure (on unusual hardware, or with bleeding-edge NodeJS distros. That said, an *optional* compilation step
 to make use of speed advantages not within reach of a JavaScript VM would of course be fine).
 
-Turns out it is not easy to find a BigNumber / BigDecimal / BigInteger library that satisfies all of the
+Turns out **it is not easy to find a BigNumber / BigDecimal / BigInteger library** which satisfies all of the
 above criteria. It has also become quite obvious to me that no matter what the 'best' library for the
 problem at hand is today, the 'even better' or 'less bad' library is just waiting for tomorrow to come.
-Also, the APIs of many of those solutions as are available today tend to be quite awful, being inherited
+Sadly, the APIs of many of the promising solutions as are available today tend to be quite awful, being inherited
 from their ancestors who originated in the highly convoluted ecosystem that is Java. So i concluded it would
 be best to make a 'shim'—basically, a standardized API that fits well into the CoffeeNode way of thinking
 and that is potentially amenable for using a number of different underlying libraries to do the number-crunching.
