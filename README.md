@@ -87,8 +87,8 @@ is online for you to read; it would appear to allow commercial usage.
 
 ## Further Reading
 
-http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
-http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
-https://github.com/MikeMcl/big.js/
-https://github.com/iriscouch/bigdecimal.js
-http://docs.python.org/2/tutorial/floatingpoint.html#tut-fp-issues
+* http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
+* http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
+* https://github.com/MikeMcl/big.js/
+* https://github.com/iriscouch/bigdecimal.js
+* http://docs.python.org/2/tutorial/floatingpoint.html#tut-fp-issues
