@@ -63,6 +63,12 @@ is online for you to read; it would appear to allow commercial usage.
 
 #### `new = ( x ) ->`
 
+Given a value `x`, return a new `BIGNUMBER/decimal` object. This is little more than an object with a
+type indicator and a `%self` member holding the result of doing `new BigDecimal x`. At this point in time,
+`x` should be a string spelling out an integer or factional number in decimal; in the future, more kinds of
+values and / or options may become available, pending research on what is essential, desirable, and
+widely expected & supported.
+
 ### Elementary Arithmetics
 
 #### `add      = ( me, you ) ->`
@@ -79,6 +85,9 @@ is online for you to read; it would appear to allow commercial usage.
 
 #### `sum = ( P... ) ->`
 #### `average_of = ( P... ) ->`
+
+Return the result of summing up several `BIGNUMBER/decimal` values which may be given as direct arguments or
+as list elements.
 
 ### Serialization
 
