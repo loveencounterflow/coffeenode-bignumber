@@ -4,6 +4,47 @@
 
 ## Rationale
 
+As is well known, JavaScript has only a single numerical datatype, an [implementation of the IEEE 754
+standard](https://en.wikipedia.org/wiki/IEEE_754#Basic_formats). This means that JavaScript represents all
+numerical values as 64-bit floating point values, with the consequence that the largest exact integral
+value is 2<sup>53</sup>sup> (ie, 9007199254740992). Also, since all values are stored in base 2, even
+many of those rational numbers `p/q` that do take on a finite form in a decimal representation are only
+approximately expressible in base 2—which leads to the now-famous violation of the assumption that `0.1 + 0.1
++ 0.1` should equal `0.3`. Note that practically all modern languages running on contemporary hardware
+suffer from these and similar defects; basically, it is a trade-off where efficiency in storage and performance
+have to be balanced with numerical correctness.
+
+There are several possible solutions to the problem of how to do calculations with very big integers and
+very log decimal fractions: for example, NodeJS's `process.hrtime` returns a tuple `[ s, ns, ]` where `s`
+represents the full seconds and `ns` the nanoseconds that have elapsed since some epoch in the past.
+Separating the two parts means each part can be represented as a JavaScript integer without becoming too
+big, but  it also means that adding and subtracting such time values becomes a chore as you have to take
+over- and underflows in the nanoseconds part into account. Even doing something as mundane as storing a
+numerically stable price in some online shop software is difficult—of course you can represent prices in
+the smallest unit of the currency in question and remain sure that all additions and subtractions will
+then be exact, but the difficulties start when you want to do things like adding 19.5% tax or include a
+33% percent rebate: all of a sudden, your implementation has not only to be reasonable, but also to comply
+with relevant laws.
+
+Within current (2013) JavaScript VMs, there is little doubt that nothing but a dedicated library for
+numerically correct big integers and long decimal fractions can be called a scalable, reliable, and
+manageable solution for the outlined applications. In order to be scalable, such a library should be
+reasonably fast; in order to be reliable, it should have been in widespread use for a number of years, and
+in order to be manageable, it should have a 'nice' API. Also, it would be good if the library didn't rely
+on some C code to get compiled, for that excludes usage within the browser (an *optional* compilation step
+to make use of speed advantages not within reach of a JavaScript VM would of course be fine).
+
+Turns out it is not easy to find a BigNumber / BigDecimal / BigInteger library that satisfies all of the
+above criteria. It has also become quite obvious to me that no matter what the 'best' library for the
+problem at hand is today, the 'even better' or 'less bad' library is just waiting for tomorrow to come.
+Also, the APIs of many of those solutions as are available today tend to be quite awful, being inherited
+from their ancestors who originated in the highly convoluted ecosystem that is Java. So i concluded it would
+be best to make a 'shim'—basically, a standardized API that fits well into the CoffeeNode way of thinking
+and that is potentially amenable for using a number of different underlying libraries to do the number-crunching.
+
+
+
+
 http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
 http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
 
@@ -12,7 +53,7 @@ http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-j
 https://github.com/MikeMcl/big.js/
 https://github.com/iriscouch/bigdecimal.js
 
-## Underlying 3<super>rd</super> Party Library
+## Underlying 3<sup>rd</sup> Party Library
 
 https://github.com/dtrebbien/BigDecimal.js
 
