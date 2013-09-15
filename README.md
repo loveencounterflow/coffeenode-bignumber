@@ -44,21 +44,51 @@ be best to make a 'shim'—basically, a standardized API that fits well into the
 and that is potentially amenable for using a number of different underlying libraries to do the number-crunching.
 
 
-
-
-http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
-http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
-
-## Implementations
-
-https://github.com/MikeMcl/big.js/
-https://github.com/iriscouch/bigdecimal.js
-
 ## Underlying 3<sup>rd</sup> Party Library
 
-https://github.com/dtrebbien/BigDecimal.js
+I will not here go into detail what my experiences with many BigDecimal libraries have been so far—it would
+be too unsystematic, to anecdotal, and probably unfair to some. The library i've settled on for the time being
+is https://github.com/dtrebbien/BigDecimal.js, for the simple reason that it seemed to work. It is a
+corrected, human-readable, 100% JavaScript translation of the Great BigDecimal Ancestor which has been part of
+Java distros for years. The source is included under `other-modules/BigDecimal.js`—quite a few files, of which
+only `build/BigDecimal-all-last.min.js` and `build/BigDecimal-all-last.js` are essential.
+
+The [**License**](http://source.icu-project.org/repos/icu/icu4j/tags/milestone-52-0-1/main/shared/licenses/license.html)
+is online for you to read; it would appear to allow commercial usage.
 
 ## API
 
 
+### Object Creation
 
+#### `new = ( x ) ->`
+
+### Elementary Arithmetics
+
+#### `add      = ( me, you ) ->`
+#### `subtract = ( me, you ) ->`
+#### `multiply = ( me, you ) ->`
+#### `divide   = ( me, you ) ->`
+
+### Comparison
+
+#### `equals = ( me, you ) ->`
+#### `compare = ( me, you ) ->`
+
+### Aggregate Functions
+
+#### `sum = ( P... ) ->`
+#### `average_of = ( P... ) ->`
+
+### Serialization
+
+#### `rpr = ( me ) ->`
+
+
+## Further Reading
+
+http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
+http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
+https://github.com/MikeMcl/big.js/
+https://github.com/iriscouch/bigdecimal.js
+http://docs.python.org/2/tutorial/floatingpoint.html#tut-fp-issues
