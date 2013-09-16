@@ -5,11 +5,13 @@
 
 
 ############################################################################################################
+MULTIMIX                  = require 'coffeenode-multimix'
 TEXT                      = require 'coffeenode-text'
 TYPES                     = require 'coffeenode-types'
+base											= require './base'
 #...........................................................................................................
 ### https://github.com/dtrebbien/BigDecimal.js ###
-BD                        = require '../other-modules/BigDecimal.js/build/BigDecimal-all-last.js'
+BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-all-last.js'
 
 
 #===========================================================================================================
@@ -20,7 +22,7 @@ BD                        = require '../other-modules/BigDecimal.js/build/BigDec
     substrate = x
   else switch type = TYPES.type_of x
     when 'text'
-      substrate = new BD.BigDecimal x
+      substrate = new BDC.BigDecimal x
     when 'BIGNUMBER/decimal'
       substrate = x[ '%self' ]
     else
@@ -34,11 +36,11 @@ BD                        = require '../other-modules/BigDecimal.js/build/BigDec
 
 #-----------------------------------------------------------------------------------------------------------
 @_isa_BigDecimal = ( x ) ->
-  return x instanceof BD.BigDecimal
+  return x instanceof BDC.BigDecimal
 
 #-----------------------------------------------------------------------------------------------------------
-@_zero  = @new BD.BigDecimal.ZERO
-@_one   = @new BD.BigDecimal.ONE
+@_zero  = @new BDC.BigDecimal.ZERO
+@_one   = @new BDC.BigDecimal.ONE
 
 
 #===========================================================================================================
@@ -91,7 +93,7 @@ BD                        = require '../other-modules/BigDecimal.js/build/BigDec
 
 #-----------------------------------------------------------------------------------------------------------
 @average_of = ( P... ) ->
-  return @new ( @sum P... )[ '%self' ].divide new BD.BigDecimal ( @_count_numbers P ).toString()
+  return @new ( @sum P... )[ '%self' ].divide new BDC.BigDecimal ( @_count_numbers P ).toString()
 
 #-----------------------------------------------------------------------------------------------------------
 @_count_numbers = ( values, level = 0 ) ->
@@ -114,5 +116,13 @@ BD                        = require '../other-modules/BigDecimal.js/build/BigDec
 #-----------------------------------------------------------------------------------------------------------
 @rpr = ( me ) ->
   return me[ '%self' ].toString()
+
+
+############################################################################################################
+module.exports = MULTIMIX.compose base, @
+
+
+
+
 
 

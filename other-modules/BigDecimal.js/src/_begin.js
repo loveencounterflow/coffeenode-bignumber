@@ -1,3 +1,0 @@
-(function () {
-
-var MathContext = (function () {

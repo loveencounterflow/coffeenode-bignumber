@@ -96,6 +96,7 @@ as list elements.
 
 ## Further Reading
 
+* http://stackoverflow.com/a/13541939/256361
 * http://stackoverflow.com/questions/744099/is-there-a-good-javascript-bigdecimal-library
 * http://stackoverflow.com/questions/2622144/is-there-a-decimal-math-library-for-javascript
 * https://github.com/MikeMcl/big.js/
