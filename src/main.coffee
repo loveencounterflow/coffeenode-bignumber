@@ -8,7 +8,7 @@
 MULTIMIX                  = require 'coffeenode-multimix'
 TEXT                      = require 'coffeenode-text'
 TYPES                     = require 'coffeenode-types'
-base											= require './base'
+base                      = require './base'
 #...........................................................................................................
 ### https://github.com/dtrebbien/BigDecimal.js ###
 BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-all-last.js'
@@ -18,6 +18,9 @@ BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-a
 # CREATION & TYPE CHECKING
 #-----------------------------------------------------------------------------------------------------------
 @new = ( x ) ->
+  return @_zero if x is '0'
+  return @_one  if x is '1'
+  #.........................................................................................................
   if @_isa_BigDecimal x
     substrate = x
   else switch type = TYPES.type_of x
@@ -73,49 +76,53 @@ BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-a
 # AGGREGATE FUNCTIONS
 #-----------------------------------------------------------------------------------------------------------
 @sum = ( P... ) ->
-  R = @_zero[ '%self' ]
-  #.........................................................................................................
-  for x in P
-    if TYPES.isa_list x then  R = R.add @_sum x
-    else                      R = R.add x[ '%self' ]
-  #.........................................................................................................
-  return @new R
+  numbers = get_list_of_arguments P
+  return @new @_reduce @_zero[ '%self' ], numbers, 'add'
 
 #-----------------------------------------------------------------------------------------------------------
-@_sum = ( numbers ) ->
-  ### Expects a list of `BIGNUMBER/decimal` values, returns an instance of the underlying substrate class.
-  Sums up while avoiding to create superfluous object wrappers. ###
-  return @_zero[ '%self' ] if numbers.length is 0
+@average = ( P... ) ->
+  numbers = get_list_of_arguments P
+  sum     = @_reduce @_zero[ '%self' ], numbers, 'add'
+  return @new sum.divide new BDC.BigDecimal ( numbers.length ).toString()
+
+#-----------------------------------------------------------------------------------------------------------
+@min = ( P... ) ->
+  numbers = get_list_of_arguments P
+  throw new Error "unable to get minimum value from empty list" if numbers.length is 0
+  return @new @_reduce_without_seed numbers, 'min'
+
+#-----------------------------------------------------------------------------------------------------------
+@max = ( P... ) ->
+  numbers = get_list_of_arguments P
+  throw new Error "unable to get maximum value from empty list" if numbers.length is 0
+  return @new @_reduce_without_seed numbers, 'max'
+
+#-----------------------------------------------------------------------------------------------------------
+@_reduce = ( seed, numbers, method_name ) ->
+  R = seed
+  R = R[ method_name ] number[ '%self' ] for number in numbers
+  return R
+
+#-----------------------------------------------------------------------------------------------------------
+@_reduce_without_seed = ( numbers, method_name ) ->
   R = numbers[ 0 ][ '%self' ]
-  R = R.add numbers[ idx ][ '%self' ] for idx in [ 1 ... numbers.length ]
-  #.........................................................................................................
+  R = R[ method_name ] numbers[ idx ][ '%self' ] for idx in [ 1 ... numbers.length ]
   return R
 
-#-----------------------------------------------------------------------------------------------------------
-@average_of = ( P... ) ->
-  return @new ( @sum P... )[ '%self' ].divide new BDC.BigDecimal ( @_count_numbers P ).toString()
-
-#-----------------------------------------------------------------------------------------------------------
-@_count_numbers = ( values, level = 0 ) ->
-  R = 0
-  #.........................................................................................................
-  for x in values
-    type = TYPES.type_of x
-    if type is 'BIGNUMBER/decimal'
-      R += 1
-    else if type is 'list'
-      throw new Error "detected illegal nested list" unless level is 0
-      R += @_count_numbers x, level + 1
-    else
-      throw new Error "encountered incompatible type #{rpr type}"
-  #.........................................................................................................
-  return R
 
 #===========================================================================================================
 # SERIALIZATION
 #-----------------------------------------------------------------------------------------------------------
 @rpr = ( me ) ->
   return me[ '%self' ].toString()
+
+
+#===========================================================================================================
+# HELPERS
+#-----------------------------------------------------------------------------------------------------------
+get_list_of_arguments = ( P ) ->
+  return P[ 0 ] if P.length == 1 and TYPES.isa_list P[ 0 ]
+  return P
 
 
 ############################################################################################################
