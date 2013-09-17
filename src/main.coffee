@@ -18,14 +18,18 @@ BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-a
 # CREATION & TYPE CHECKING
 #-----------------------------------------------------------------------------------------------------------
 @new = ( x ) ->
-  return @_zero if x is '0'
-  return @_one  if x is '1'
+  return @_zero if x is '0' or x is 0
+  return @_one  if x is '1' or x is 1
   #.........................................................................................................
   if @_isa_BigDecimal x
     substrate = x
   else switch type = TYPES.type_of x
     when 'text'
       substrate = new BDC.BigDecimal x
+    when 'number'
+      unless x is parseInt x
+        throw new Error "unable to convert a non-integral number to a BIGNUMBER/decimal object"
+      substrate = new BDC.BigDecimal x.toString 10
     when 'BIGNUMBER/decimal'
       substrate = x[ '%self' ]
     else
@@ -82,6 +86,7 @@ BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-a
 #-----------------------------------------------------------------------------------------------------------
 @average = ( P... ) ->
   numbers = get_list_of_arguments P
+  throw new Error "unable to get average value from empty list" if numbers.length is 0
   sum     = @_reduce @_zero[ '%self' ], numbers, 'add'
   return @new sum.divide new BDC.BigDecimal ( numbers.length ).toString()
 
@@ -111,10 +116,14 @@ BDC                       = require '../other-modules/BigDecimal.js/BigDecimal-a
 
 
 #===========================================================================================================
-# SERIALIZATION
+# SERIALIZATION AND CASTING
 #-----------------------------------------------------------------------------------------------------------
 @rpr = ( me ) ->
   return me[ '%self' ].toString()
+
+#-----------------------------------------------------------------------------------------------------------
+@as_number = ( me ) ->
+  return parseFloat me[ '%self' ].toString(), 10
 
 
 #===========================================================================================================
